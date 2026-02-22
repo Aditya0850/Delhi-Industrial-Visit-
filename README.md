@@ -1,4 +1,4 @@
-# Delhi-Industrial-Visit-
+# Delhi-Industrial-Visit
 Learnings, reports, and materials from Delhi Industrial Visit 2026.
 
 # 🏭 Delhi Industrial Visit 2026
