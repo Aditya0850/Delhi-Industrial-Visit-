@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>RailFood AI</title>
+    <meta name="description" content="AI-powered food delivery for Indian Railways passengers. Order food right from your seat.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app" class="app-container">
+        <!-- Screens will be injected here -->
+    </div>
+
+    <!-- Templates for different screens -->
+    
+    <!-- Screen: Login / Home -->
+    <template id="screen-login">
+        <div class="screen login-screen">
+            <div class="login-header">
+                <i data-lucide="train" class="hero-icon"></i>
+                <h1>RailFood AI</h1>
+                <p>Smart dining at your seat</p>
+            </div>
+            
+            <div class="login-card">
+                <h2>Welcome aboard!</h2>
+                <p class="subtitle">Enter your PNR or scan QR to continue</p>
+                
+                <div class="input-group">
+                    <i data-lucide="ticket"></i>
+                    <input type="text" id="pnr-input" placeholder="Enter 10-digit PNR" maxlength="10" />
+                </div>
+                
+                <button id="btn-login" class="btn btn-primary btn-block">
+                    <i data-lucide="arrow-right"></i> Continue
+                </button>
+                
+                <div class="divider">
+                    <span>OR</span>
+                </div>
+                
+                <button id="btn-scan" class="btn btn-secondary btn-block">
+                    <i data-lucide="qr-code"></i> Scan Seat QR
+                </button>
+            </div>
+        </div>
+    </template>
+
+    <!-- Screen: Order Food (Menu) -->
+    <template id="screen-order">
+        <div class="screen order-screen">
+            <header class="app-header">
+                <div class="user-info">
+                    <div class="train-details">
+                        <span class="train-no">Train 12003 (Shatabdi Exp)</span>
+                        <span class="seat-info">Coach C2, Seat 14</span>
+                    </div>
+                </div>
+                <button class="icon-btn profile-btn"><i data-lucide="user"></i></button>
+            </header>
+
+            <div class="ai-assistant-card">
+                <div class="ai-header">
+                    <i data-lucide="bot" class="ai-icon"></i>
+                    <span>AI Assistant</span>
+                </div>
+                <p class="ai-message">"Hi! I see you're approaching Kanpur. Would you like to order some local specialties?"</p>
+                <div class="ai-input">
+                    <input type="text" id="ai-order-input" placeholder="E.g., I want 2 thalis and a cold drink" />
+                    <button class="icon-btn pulse"><i data-lucide="mic"></i></button>
+                    <button id="btn-ai-order" class="icon-btn"><i data-lucide="send"></i></button>
+                </div>
+            </div>
+
+            <div class="menu-section">
+                <div class="section-header">
+                    <h3>Popular Right Now</h3>
+                    <span>See all</span>
+                </div>
+                <div class="menu-list">
+                    <div class="menu-item">
+                        <div class="item-img" style="background-image: url('https://images.unsplash.com/photo-1546833999-b9f581a1996d?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80')"></div>
+                        <div class="item-details">
+                            <h4>Premium Veg Thali</h4>
+                            <p>Paneer, Dal Makhani, Rice, Roti, Sweet</p>
+                            <span class="price">₹250</span>
+                        </div>
+                        <button class="add-btn" onclick="app.placeOrder()"><i data-lucide="plus"></i></button>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-img" style="background-image: url('https://images.unsplash.com/photo-1589302168068-964664d93cb0?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80')"></div>
+                        <div class="item-details">
+                            <h4>Chicken Biryani</h4>
+                            <p>Served with raita and salan</p>
+                            <span class="price">₹300</span>
+                        </div>
+                        <button class="add-btn" onclick="app.placeOrder()"><i data-lucide="plus"></i></button>
+                    </div>
+                </div>
+            </div>
+            
+            <nav class="bottom-nav">
+                <a href="#" class="nav-item active"><i data-lucide="utensils"></i><span>Order</span></a>
+                <a href="#" class="nav-item" onclick="app.navigate('tracking')"><i data-lucide="map"></i><span>Track</span></a>
+                <a href="#" class="nav-item" onclick="app.navigate('feedback')"><i data-lucide="star"></i><span>Feedback</span></a>
+            </nav>
+        </div>
+    </template>
+
+    <!-- Screen: Delivery Tracking -->
+    <template id="screen-tracking">
+        <div class="screen tracking-screen">
+            <header class="app-header">
+                <button class="icon-btn" onclick="app.navigate('order')"><i data-lucide="arrow-left"></i></button>
+                <h2>Track Order #RF8832</h2>
+                <div class="spacer"></div>
+            </header>
+
+            <div class="map-container">
+                <div class="live-map-placeholder">
+                    <i data-lucide="map-pin" class="pin-icon moving"></i>
+                    <div class="train-path">
+                        <div class="path-line"></div>
+                        <i data-lucide="train" class="train-marker"></i>
+                    </div>
+                </div>
+                <div class="ml-prediction">
+                    <div class="eta">
+                        <span class="eta-time">14 mins</span>
+                        <span class="eta-label">AI Predicted ETA</span>
+                    </div>
+                    <div class="delivery-location">
+                        <span class="station">Bhopal Jn.</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tracking-steps">
+                <div class="step completed">
+                    <div class="step-icon"><i data-lucide="check"></i></div>
+                    <div class="step-content">
+                        <h4>Order Received</h4>
+                        <p>12:30 PM • Smart Vendor Assigned</p>
+                    </div>
+                </div>
+                <div class="step completed">
+                    <div class="step-icon"><i data-lucide="chef-hat"></i></div>
+                    <div class="step-content">
+                        <h4>Preparing</h4>
+                        <p>12:35 PM • Cloud Kitchen, Bhopal</p>
+                    </div>
+                </div>
+                <div class="step active">
+                    <div class="step-icon"><i data-lucide="package"></i></div>
+                    <div class="step-content">
+                        <h4>Dispatched</h4>
+                        <p>12:45 PM • Executive is heading to your coach</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-icon"><i data-lucide="home"></i></div>
+                    <div class="step-content">
+                        <h4>Delivered</h4>
+                        <p>Pending</p>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="btn btn-primary btn-block finish-btn" onclick="app.navigate('feedback')">
+                Simulate Delivery Completed
+            </button>
+        </div>
+    </template>
+
+    <!-- Screen: Feedback -->
+    <template id="screen-feedback">
+        <div class="screen feedback-screen">
+            <header class="app-header">
+                <button class="icon-btn" onclick="app.navigate('order')"><i data-lucide="arrow-left"></i></button>
+                <h2>Order Delivered</h2>
+                <div class="spacer"></div>
+            </header>
+
+            <div class="feedback-container">
+                <div class="celebration-icon">
+                    <i data-lucide="party-popper"></i>
+                </div>
+                
+                <h3>How was your meal?</h3>
+                <p>Your AI feedback will help us improve.</p>
+
+                <div class="rating-stars">
+                    <i data-lucide="star" class="star" data-val="1"></i>
+                    <i data-lucide="star" class="star" data-val="2"></i>
+                    <i data-lucide="star" class="star" data-val="3"></i>
+                    <i data-lucide="star" class="star" data-val="4"></i>
+                    <i data-lucide="star" class="star" data-val="5"></i>
+                </div>
+
+                <div class="sentiment-analysis-box">
+                    <label>Tell us more</label>
+                    <textarea id="feedback-text" rows="4" placeholder="E.g., The food was hot but arrived a bit late. The paneer was delicious!"></textarea>
+                    
+                    <div class="ai-sentiment-badge hidden" id="sentiment-badge">
+                        <i data-lucide="zap"></i> <span id="sentiment-text">Analyzing sentiment...</span>
+                    </div>
+                </div>
+
+                <button id="btn-submit-feedback" class="btn btn-primary btn-block">
+                    Submit Feedback
+                </button>
+            </div>
+        </div>
+    </template>
+
+    <script src="app.js"></script>
+</body>
+</html>
